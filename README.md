@@ -15,7 +15,9 @@ The pins should be Open Drain and Pulled-up.
 
 ## Example use
 #include "main.h"
+
 #include "stm32_sw_i2c.h"
+
 #include "dwt_stm32_delay.h"
 
 #define SLAVE_ADDR 0x1E
@@ -25,11 +27,15 @@ uint8_t _txBuffer[6];
 int main(void){
 
    I2C_init();
+   
    MX_GPIO_Init();
    
   _txBuffer[0] = 0x05;
+  
   _txBuffer[1] = 0x04;
+  
   _txBuffer[2] = 0x15;
+  
   _txBuffer[3] = 0x00;
   
    DWT_Delay_us(300000); //300 ms
