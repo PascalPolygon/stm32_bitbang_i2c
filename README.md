@@ -12,3 +12,10 @@ For your SCL pin: **SW_I2C_SCL**
 For your SDA pin: **SW_I2C_SDA**
 
 The pins should be Open Drain and Pulled-up.
+
+## Credit
+This was inspired by and adapted from:
+https://calcium3000.wordpress.com/2016/08/19/i2c-bit-banging-tutorial-part-i/
+and
+https://github.com/tobajer/i2cbitbang
+
