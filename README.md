@@ -25,14 +25,13 @@ The pins should be Open Drain and Pulled-up.
          int main(void){
 
                   I2C_init();
+                  DWT_Delay_us(1000); //1 ms
                   MX_GPIO_Init();
                   
                  _txBuffer[0] = 0x05;
                  _txBuffer[1] = 0x04;
                  _txBuffer[2] = 0x15;
                  _txBuffer[3] = 0x00;
-
-                  DWT_Delay_us(300000); //300 ms
 
                   I2C_transmit(SLAVE_ADDR, _txBuffer, 4); //4 is the size of the transmission (4 bytes)
 
