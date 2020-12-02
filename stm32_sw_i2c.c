@@ -11,6 +11,9 @@
 //	  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 //}
 
+#define true 1
+#define false 0
+
 void I2C_init(void)
 {
     I2C_SET_SDA;
@@ -99,4 +102,115 @@ _Bool I2C_write_byte(uint8_t B,
         I2C_stop_cond();
 
     return ack;
+}
+
+// Reading a byte with I2C:
+uint8_t i2c_read_byte(_Bool ack, _Bool stop)
+{
+    uint8_t B = 0;
+
+    uint8_t i;
+    for (i = 0; i < 8; i++)
+    {
+        B <<= 1;
+        B |= I2C_read_bit();
+    }
+
+    if (ack)
+        I2C_write_bit(0);
+    else
+        I2C_write_bit(1);
+
+    if (stop)
+        I2C_stop_cond();
+
+    return B;
+}
+
+// Sending a byte with I2C:
+_Bool I2C_send_byte(uint8_t address,
+                    uint8_t data)
+{
+    if (I2C_write_byte(address << 1, true, false)) // start, send address, write
+    {
+        // send data, stop
+        if (I2C_write_byte(data, false, true))
+            return true;
+    }
+
+    I2C_stop_cond(); // make sure to impose a stop if NAK'd
+    return false;
+}
+
+// Receiving a byte with a I2C:
+uint8_t I2C_receive_byte(uint8_t address)
+{
+    if (I2C_write_byte((address << 1) | 0x01, true, false)) // start, send address, read
+    {
+        return I2C_read_byte(false, true);
+    }
+
+    return 0; // return zero if NAK'd
+}
+
+// Sending a byte of data with I2C:
+_Bool I2C_send_byte_data(uint8_t address,
+                         uint8_t reg,
+                         uint8_t data)
+{
+    //    if( I2C_write_byte( address << 1, true, false ) )   // start, send address, write
+    if (I2C_write_byte(address, true, false))
+    {
+        if (I2C_write_byte(reg, false, false)) // send desired register
+        {
+            if (I2C_write_byte(data, false, true))
+                return true; // send data, stop
+        }
+    }
+
+    I2C_stop_cond();
+    return false;
+}
+
+// Receiving a byte of data with I2C:
+uint8_t I2C_receive_byte_data(uint8_t address,
+                              uint8_t reg)
+{
+    //if( I2C_write_byte( address << 1, true, false ) )   // start, send address, write
+    if (I2C_write_byte(address, true, false))
+    {
+        if (I2C_write_byte(reg, false, false)) // send desired register
+        {
+            if (I2C_write_byte((address << 1) | 0x01, true, false)) // start again, send address, read
+            {
+                return I2C_read_byte(false, true); // read data
+            }
+        }
+    }
+
+    I2C_stop_cond();
+    return 0; // return zero if NACKed
+}
+
+_Bool I2C_transmit(uint8_t address, uint8_t data[], uint8_t size)
+{
+    if (I2C_write_byte(address, true, false)) // first byte
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (i == size - 1)
+            {
+                if (I2C_write_byte(data[i], false, true))
+                    return true;
+            }
+            else
+            {
+                if (!I2C_write_byte(data[i], false, false))
+                    break; //last byte
+            }
+        }
+    }
+
+    I2C_stop_cond();
+    return false;
 }
