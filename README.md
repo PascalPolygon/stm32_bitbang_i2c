@@ -14,35 +14,29 @@ For your SDA pin: **SW_I2C_SDA**
 The pins should be Open Drain and Pulled-up.
 
 ## Example use
-#include "main.h"
+         #include "main.h"
+         #include "stm32_sw_i2c.h"
+         #include "dwt_stm32_delay.h"
+         
+         #define SLAVE_ADDR 0x1E
+         
+         uint8_t _txBuffer[6];
 
-#include "stm32_sw_i2c.h"
+         int main(void){
 
-#include "dwt_stm32_delay.h"
+                  I2C_init();
+                  MX_GPIO_Init();
+                  
+                 _txBuffer[0] = 0x05;
+                 _txBuffer[1] = 0x04;
+                 _txBuffer[2] = 0x15;
+                 _txBuffer[3] = 0x00;
 
-#define SLAVE_ADDR 0x1E
+                  DWT_Delay_us(300000); //300 ms
 
-uint8_t _txBuffer[6];
+                  I2C_transmit(SLAVE_ADDR, _txBuffer, 4); //4 is the size of the transmission (4 bytes)
 
-int main(void){
-
-         I2C_init();
-
-         MX_GPIO_Init();
-
-        _txBuffer[0] = 0x05;
-
-        _txBuffer[1] = 0x04;
-
-        _txBuffer[2] = 0x15;
-
-        _txBuffer[3] = 0x00;
-
-         DWT_Delay_us(300000); //300 ms
-
-         I2C_transmit(SLAVE_ADDR, _txBuffer, 4); //4 is the size of the transmission (4 bytes)
-
-}
+         }
 
 
 ## Credit
