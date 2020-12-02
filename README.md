@@ -11,4 +11,4 @@ For your SCL pin: **SW_I2C_SCL**
 
 For your SDA pin: **SW_I2C_SDA**
 
-The pins should be Open Drain and pulled-up.
+The pins should be Open Drain and Pulled-up.
