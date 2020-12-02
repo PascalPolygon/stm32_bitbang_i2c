@@ -70,8 +70,6 @@ uint8_t I2C_read_bit(void)
     I2C_SET_SCL
     I2C_DELAY
 
-    //    if( I2C_INPORT & SDA ) b = 1;
-    //    else b = 0;
     b = I2C_read_SDA();
 
     I2C_CLEAR_SCL
