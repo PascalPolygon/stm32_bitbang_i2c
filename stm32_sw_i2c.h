@@ -28,16 +28,18 @@ uint8_t I2C_read_bit(void);
 
 _Bool I2C_write_byte(uint8_t B, _Bool start, _Bool stop);
 
-uint8_t I2C_read_byte(_Bool ack, _Bool stop);
+uint8_t I2C_read_byte( _Bool ack, _Bool stop );
 
-_Bool I2C_send_byte(uint8_t address, uint8_t data);
+_Bool I2C_send_byte( uint8_t address, uint8_t data );
 
-uint8_t I2C_receive_byte(uint8_t address);
+uint8_t I2C_receive_byte( uint8_t address );
 
-_Bool I2C_send_byte_data(uint8_t address, uint8_t reg, uint8_t data);
+_Bool I2C_send_byte_data( uint8_t address, uint8_t reg, uint8_t data );
 
-uint8_t I2C_receive_byte_data(uint8_t address, uint8_t reg);
+uint8_t I2C_receive_byte_data( uint8_t address, uint8_t reg );
 
 _Bool I2C_transmit(uint8_t address, uint8_t data[], uint8_t size);
+
+_Bool I2C_receive(uint8_t address, uint8_t reg[], uint8_t *data, uint8_t reg_size, uint8_t size);
 
 #endif /*__STM32_SW_I2C_H */
