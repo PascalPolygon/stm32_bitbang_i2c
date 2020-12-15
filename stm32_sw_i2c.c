@@ -101,7 +101,7 @@ _Bool I2C_write_byte(uint8_t B,
     if (stop)
         I2C_stop_cond();
 
-    return ack;
+    return !ack; //0-ack, 1-nack
 }
 
 // Reading a byte with I2C:
@@ -131,7 +131,8 @@ uint8_t I2C_read_byte(_Bool ack, _Bool stop)
 _Bool I2C_send_byte(uint8_t address,
                     uint8_t data)
 {
-    if (I2C_write_byte(address << 1, true, false)) // start, send address, write
+    //    if( I2C_write_byte( address << 1, true, false ) )   // start, send address, write
+    if (I2C_write_byte(address, true, false)) // start, send address, write
     {
         // send data, stop
         if (I2C_write_byte(data, false, true))
