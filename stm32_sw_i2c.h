@@ -1,3 +1,8 @@
+/*
+  stm32_sw_i2c.h - Library for implementing I2C in SW on any GPIO on STM32 MCU.
+  Created by Mawaba Pascal Dao, Dec 2, 2020.
+  Released into the public domain.
+*/
 #ifndef __STM32_SW_I2C_H
 #define __STM32_SW_I2C_H
 
